@@ -19,4 +19,5 @@
 * when playing a bookmark, it should go back time-[configurable interval] instead of the price time
 * have netflix like rewind 30 seconds
 
-
+## Notes
+* Tested in Chrome/Linux (Version 52.0.2743.82 (64-bit))
