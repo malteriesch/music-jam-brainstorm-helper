@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+<input type="file" id="file"/>
+<hr/>
+<audio controls id="audio">
+    <source id="audio-src" src="" >
+
+</audio>
+<hr/>
+<button onclick="mark()">Mark</button>
+<hr/>
+<!--<button onclick="cont()">Continue</button>-->
+<button onclick="exportJson()" ">Export Json</button>
+<button onclick="importJson()" ">Import Json</button>
+<script>
+var playHead = 0;
+function mark()
+{
+    var currentTime = document.getElementsByTagName("audio")[0].currentTime;
+    $('#list').append("<li class=\"time\" data-time=\""+currentTime+"\">"+currentTime+" <button onclick=\"play("+currentTime+")\">Play</button>  <input cols=20 type=\"text\"/><button onclick=\"remove("+currentTime+")\">Remove</button></li>")
+}
+
+function play(time)
+{
+    playHead = document.getElementsByTagName("audio")[0].currentTime;
+    document.getElementsByTagName("audio")[0].currentTime = time;
+}
+
+function remove(time)
+{
+    $("li[data-time='"+time+"']").remove();
+    document.getElementsByTagName("audio")[0].currentTime = time;
+}
+
+function cont()
+{
+    document.getElementsByTagName("audio")[0].currentTime = playHead;
+}
+
+function exportJson()
+{
+    if (!confirm('Are you sure?')) {
+        return;
+    }
+    var times =[];
+    $('.time').each(function(item){
+        var time = $(this).data('time');
+        var comment = $(this).find('input').first().val();
+        times.push({
+            time:time,
+            comment:comment
+        });
+    });
+    $('#json').val(JSON.stringify(times));
+}
+
+function importJson()
+{
+    if (!confirm('Are you sure?')) {
+        return;
+    }
+    var times = JSON.parse($('#json').val());
+    times.map(function(item){
+        $('#list').append("<li class=\"time\" data-time=\""+item.time+"\">"+item.time+" <button onclick=\"play("+item.time+")\">Play</button>  <input cols=20 type=\"text\" value=\""+item.comment+"\"/><button onclick=\"remove("+item.time+")\">Remove</button></li>")
+    });
+}
+
+document.getElementsByTagName("audio")[0].addEventListener("seeked", function() {console.log('1');
+    playHead = document.getElementsByTagName("audio")[0].currentTime;
+}, true);
+
+
+
+document.getElementById('file').addEventListener('change', function(event){
+    var blob = window.URL || window.webkitURL;
+    var file = this.files[0],
+            fileURL = blob.createObjectURL(file);
+    document.getElementById('audio').src = fileURL;
+});
+</script>
+<hr/>
+<ul id="list">
+
+</ul>
+<hr/>
+JSON<br/>
+<textarea id="json" cols="50" rows="20">
+
+</textarea>
+</body>
+</html>
