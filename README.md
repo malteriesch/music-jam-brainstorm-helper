@@ -1,4 +1,4 @@
-# A very simple quick'n dirty Music Jam Barinstorm Helper
+# A very simple quick'n dirty Music Jam Brainstorm Helper
 
 ## Instructions
 
