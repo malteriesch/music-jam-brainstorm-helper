@@ -13,7 +13,7 @@
 * when clicking 'play' to go to a bookmark, the player needs to be already playing
 
 
- TODO
+ ## TODO
 * Clean up code
 * keep playhead when going back to bookmarks to continue afterwards
 * when playing a bookmark, it should go back time-[configurable interval] instead of the price time
