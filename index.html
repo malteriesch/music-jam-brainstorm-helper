@@ -9,7 +9,7 @@
 
 <input type="file" id="file"/>
 <hr/>
-<audio controls id="audio">
+<audio controls id="audio" style="width:100%">
     <source id="audio-src" src="" >
 
 </audio>
@@ -17,8 +17,12 @@
 <button onclick="mark()">Mark</button>
 <hr/>
 <!--<button onclick="cont()">Continue</button>-->
-<button onclick="exportJson()" ">Export Json</button>
-<button onclick="importJson()" ">Import Json</button>
+<button onclick="exportJson()" >Export Json</button>
+<button onclick="importJson()" >Import Json</button>
+<button onclick="rewind(30)" >Back 30s</button>
+<button onclick="rewind(10)" >Back 10s</button>
+<button onclick="rewind(5)" >Back 5s</button>
+<button onclick="rewind(1)" >Back 1s</button>
 <script>
 var playHead = 0;
 function mark()
@@ -31,6 +35,12 @@ function play(time)
 {
     playHead = document.getElementsByTagName("audio")[0].currentTime;
     document.getElementsByTagName("audio")[0].currentTime = time;
+}
+
+function rewind(rewindTime)
+{
+    playHead = document.getElementsByTagName("audio")[0].currentTime;
+    document.getElementsByTagName("audio")[0].currentTime = (playHead-rewindTime)> 0 ? (playHead-rewindTime) : 0;
 }
 
 function remove(time)
@@ -46,9 +56,9 @@ function cont()
 
 function exportJson()
 {
-    if (!confirm('Are you sure?')) {
-        return;
-    }
+//    if (!confirm('Are you sure?')) {
+//        return;
+//    }
     var times =[];
     $('.time').each(function(item){
         var time = $(this).data('time');
