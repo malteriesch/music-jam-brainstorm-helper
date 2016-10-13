@@ -23,12 +23,23 @@
 <button onclick="rewind(10)" >Back 10s</button>
 <button onclick="rewind(5)" >Back 5s</button>
 <button onclick="rewind(1)" >Back 1s</button>
+<hr/>
+<ul id="list">
+
+</ul>
+<hr/>
+JSON<br/>
+<textarea id="json" cols="50" rows="20">
+
+</textarea>
 <script>
+
+
 var playHead = 0;
 function mark()
 {
     var currentTime = document.getElementsByTagName("audio")[0].currentTime;
-    $('#list').append("<li class=\"time\" data-time=\""+currentTime+"\">"+currentTime+" <button onclick=\"play("+currentTime+")\">Play</button>  <input cols=20 type=\"text\"/><button onclick=\"remove("+currentTime+")\">Remove</button></li>")
+    $('#list').append("<li class=\"time\" data-time=\""+currentTime+"\">"+currentTime+" <button onclick=\"play("+currentTime+")\">Play</button>  <input cols=50 type=\"text\"/><button onclick=\"remove("+currentTime+")\">Remove</button></li>")
 }
 
 function play(time)
@@ -68,17 +79,16 @@ function exportJson()
             comment:comment
         });
     });
-    $('#json').val(JSON.stringify(times));
+    var json = JSON.stringify(times);
+    $('#json').val(json);
+    localStorage.setItem('json', json);
 }
 
 function importJson()
 {
-    if (!confirm('Are you sure?')) {
-        return;
-    }
     var times = JSON.parse($('#json').val());
     times.map(function(item){
-        $('#list').append("<li class=\"time\" data-time=\""+item.time+"\">"+item.time+" <button onclick=\"play("+item.time+")\">Play</button>  <input cols=20 type=\"text\" value=\""+item.comment+"\"/><button onclick=\"remove("+item.time+")\">Remove</button></li>")
+        $('#list').append("<li class=\"time\" data-time=\""+item.time+"\">"+item.time+" <button onclick=\"play("+item.time+")\">Play</button>  <input cols=50 type=\"text\" value=\""+item.comment+"\"/><button onclick=\"remove("+item.time+")\">Remove</button></li>")
     });
 }
 
@@ -93,16 +103,21 @@ document.getElementById('file').addEventListener('change', function(event){
     var file = this.files[0],
             fileURL = blob.createObjectURL(file);
     document.getElementById('audio').src = fileURL;
+    localStorage.setItem('file', fileURL);
 });
+
+fileURL = localStorage.getItem('file');
+if(fileURL) {
+   // document.getElementById('audio').src = fileURL;
+}
+
+json = localStorage.getItem('json');
+if (json) {
+    $('#json').val(json);
+    importJson();
+}
+
 </script>
-<hr/>
-<ul id="list">
 
-</ul>
-<hr/>
-JSON<br/>
-<textarea id="json" cols="50" rows="20">
-
-</textarea>
 </body>
 </html>
